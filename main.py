@@ -1,6 +1,7 @@
 import json
 import os.path
 from os import path
+from datetime import datetime
 
 main_data = []
 id_notes = 1
@@ -26,7 +27,7 @@ def read_all_notes_from_file():
 def show_all():
     if main_data != []:
         for note in main_data:
-            print("{}. {}\n{}\n".format(note['id'], note['title'].upper(), note['message'][:20]))
+            print("{}. {}\n{}\n{}\n".format(note['id'], note['title'].upper(), note['message'][:20],note['time']))
     else:
         print("Notebook is empty!\n")
 
@@ -49,9 +50,10 @@ def save_note_in_file():
 
 def add_note():
     global id_notes
+    curent_date = str(datetime.now())
     title = input("Enter a title:\n")
     massage = input("Enter a message:\n")
-    temp_note = {"id": id_notes, "title": title, "message": massage}
+    temp_note = {"id": id_notes, "title": title, "message": massage, "time":curent_date}
     main_data.append(temp_note)
     id_notes += 1
     save_note()
@@ -64,7 +66,8 @@ def change_note():
         if choice != -1:
             title = input("Enter a title:\n")
             massage = input("Enter a message:\n")
-            temp_note = {"id": choice + 1, "title": title, "message": massage}
+            curent_date = str(datetime.now())
+            temp_note = {"id": choice + 1, "title": title, "message": massage, "time":curent_date}
             main_data.remove(main_data[choice])
             main_data.insert(choice, temp_note)
             save_note()
@@ -104,8 +107,8 @@ def search_id():
     if choice != -1:
 
         if choice < len(main_data):
-            print("{}. {}\n{}\n".format(main_data[choice]['id'], main_data[choice]['title'].upper(),
-                                        main_data[choice]['message']))
+            print("{}. {}\n{}\n{}\n".format(main_data[choice]['id'], main_data[choice]['title'].upper(),
+                                        main_data[choice]['message'],main_data[choice]['time']))
         else:
             print("Id is not found!\n")
     else:
@@ -118,8 +121,8 @@ def search_title():
     for note in main_data:
         if note["title"].lower().strip() == choice.lower().strip():
             temp_id = note["id"] - 1
-            print("{}. {}\n{}\n".format(main_data[temp_id]['id'], main_data[temp_id]['title'].upper(),
-                                        main_data[temp_id]['message']))
+            print("{}. {}\n{}\n{}\n".format(main_data[temp_id]['id'], main_data[temp_id]['title'].upper(),
+                                            main_data[temp_id]['message'], main_data[temp_id]['time']))
             flag = False
     if flag:
         print("Title is not found!\n")
@@ -131,8 +134,8 @@ def search_text():
     for note in main_data:
         if choice.lower().strip() in note["message"].lower().strip():
             temp_id = note["id"] - 1
-            print("{}. {}\n{}\n".format(main_data[temp_id]['id'], main_data[temp_id]['title'].upper(),
-                                        main_data[temp_id]['message']))
+            print("{}. {}\n{}\n{}\n".format(main_data[temp_id]['id'], main_data[temp_id]['title'].upper(),
+                                            main_data[temp_id]['message'], main_data[temp_id]['time']))
             flag = False
     if flag:
         print("Text is not found!\n")
@@ -156,7 +159,7 @@ def delete_note():
                 for temp_index in range(choice, len(main_data)):
                     temp_note = main_data[temp_index]
                     main_data[temp_index] = {"id": temp_index + 1, "title": temp_note['title'],
-                                             "message": temp_note['message']}
+                                             "message": temp_note['message'],"time":temp_note['time']}
                     save_note()
             save_note()
             print("Note was deleted!\n")
