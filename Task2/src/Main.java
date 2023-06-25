@@ -11,7 +11,7 @@ public class Main {
         ts.getInfoAboutList();
         System.out.println("*********************************");
         for (int i = 0; i < 10; i++) {
-           ts.saveInFile(ts.getToyProbabilityTheory());
+            ts.saveInFile(ts.getToyProbabilityTheory());
         }
     }
 }

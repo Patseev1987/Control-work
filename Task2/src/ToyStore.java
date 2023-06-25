@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.SQLOutput;
+import java.io.*;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -11,7 +8,6 @@ public class ToyStore {
     int[] arrayId;
     int[] arrayFrequency;
     String[] names;
-
     Scanner scanner = new Scanner(System.in);
     Random random = new Random();
 
@@ -36,9 +32,12 @@ public class ToyStore {
                 System.out.println("Enter a frequency:");
                 String str2 = scanner.next();
                 int frequency = Integer.parseInt(str2);
+                checkResult(id, name, frequency);
+                checkIdInArray(id);
                 fillArrays(i, id, name, frequency);
             } catch (RuntimeException e) {
                 System.out.println("You made a mistake ---> " + e.getMessage());
+                System.out.println("This trying was not counted!");
                 i--;
             }
         }
@@ -95,8 +94,8 @@ public class ToyStore {
 
     public void saveInFile(Toy toy) throws IOException {
         File file = new File("test.txt");
-        FileWriter fw = new FileWriter(file,true);
-        fw.write(toy.toString()+'\n');
+        FileWriter fw = new FileWriter(file, true);
+        fw.write(toy.toString() + '\n');
         fw.close();
     }
 
@@ -111,4 +110,28 @@ public class ToyStore {
     public String[] getNames() {
         return names;
     }
+
+
+    private void checkResult(int id, String name, int frequency) throws RuntimeException {
+        if (id < 1) {
+            throw new RuntimeException("Wrong id! ---> " + id);
+        }
+        if (name.isEmpty()) {
+            throw new RuntimeException("Wrong name! Name can't be empty!");
+        }
+        if (frequency < 0 || frequency >= 100) {
+            throw new RuntimeException("Wrong frequency! ---> " + frequency);
+        }
+    }
+
+
+    private void checkIdInArray (int id) throws RuntimeException{
+        for (int temp: arrayId) {
+            if (temp==id) throw new RuntimeException("This id is exist!");
+        }
+    }
+
+
 }
+
+
